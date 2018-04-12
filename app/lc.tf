@@ -107,3 +107,152 @@ resource "aws_launch_configuration" "solr_lc" {
     create_before_destroy = true
   }
 }
+
+# inventory launch configuration
+data "aws_ami" "inventory" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_launch_configuration" "inventory_lc" {
+  name_prefix                 = "inventory-web-"
+  image_id                    = "${data.aws_ami.inventory.id}"
+  instance_type               = "${var.inventory_lc_instance_type}"
+  associate_public_ip_address = false
+  key_name                    = "${var.key_name}"
+  security_groups             = [ "${aws_security_group.inventory-sg.id}", "${aws_security_group.ssh-sg.id}" ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# crm launch configuration
+data "aws_ami" "crm" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_launch_configuration" "crm_lc" {
+  name_prefix                 = "crm-web-"
+  image_id                    = "${data.aws_ami.crm.id}"
+  instance_type               = "${var.crm_lc_instance_type}"
+  associate_public_ip_address = false
+  key_name                    = "${var.key_name}"
+  security_groups             = [ "${aws_security_group.crm-sg.id}", "${aws_security_group.ssh-sg.id}" ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# dashboard launch configuration
+data "aws_ami" "dashboard" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_launch_configuration" "dashboard_lc" {
+  name_prefix                 = "dashboard-web-"
+  image_id                    = "${data.aws_ami.dashboard.id}"
+  instance_type               = "${var.dashboard_lc_instance_type}"
+  associate_public_ip_address = false
+  key_name                    = "${var.key_name}"
+  security_groups             = [ "${aws_security_group.dashboard-sg.id}", "${aws_security_group.ssh-sg.id}" ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+# wordpress launch configuration
+data "aws_ami" "wordpress" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_launch_configuration" "wordpress_lc" {
+  name_prefix                 = "wordpress-web-"
+  image_id                    = "${data.aws_ami.wordpress.id}"
+  instance_type               = "${var.wordpress_lc_instance_type}"
+  associate_public_ip_address = false
+  key_name                    = "${var.key_name}"
+  security_groups             = [ "${aws_security_group.wordpress-sg.id}", "${aws_security_group.ssh-sg.id}" ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# static launch configuration
+data "aws_ami" "static" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_launch_configuration" "static_lc" {
+  name_prefix                 = "static-web-"
+  image_id                    = "${data.aws_ami.static.id}"
+  instance_type               = "${var.static_lc_instance_type}"
+  associate_public_ip_address = false
+  key_name                    = "${var.key_name}"
+  security_groups             = [ "${aws_security_group.static-sg.id}", "${aws_security_group.ssh-sg.id}" ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
